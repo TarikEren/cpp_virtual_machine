@@ -7,9 +7,7 @@
 #define STACK_SIZE 10 //For now
 
 typedef enum error_type {
-    INVALID_ADDRESS = 1, //Because the stack doesn't store any negative values for now,
-    //using negative values for the error codes is valid.
-    //Might use chars or strings in the future.
+    INVALID_ADDRESS = 1,
     INVALID_INSTRUCTION,
     TARGET_ADDRESS_FULL
 }error_type;

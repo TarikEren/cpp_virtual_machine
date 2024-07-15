@@ -1,5 +1,13 @@
 #include "headers/machine.h"
 
+/*
+ * ADD XXX
+ * SUB XXX
+ * SAVE XXX
+ * LOAD XXX
+ * INT XXXX
+ * */
+
 int main() {
     Machine machine;
     machine.push(0x4009);
