@@ -1,0 +1,12 @@
+#ifndef CPP_VIRTUAL_MACHINE_ERRORS_H
+#define CPP_VIRTUAL_MACHINE_ERRORS_H
+
+typedef enum error_type {
+    INVALID_ADDRESS = 1,
+    INVALID_INSTRUCTION,
+    TARGET_ADDRESS_FULL,
+    INVALID_FILENAME,
+}error_type;
+
+
+#endif

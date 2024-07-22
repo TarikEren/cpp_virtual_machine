@@ -2,15 +2,10 @@
 #define CPP_VIRTUAL_MACHINE_MACHINE_H
 
 #include <iostream>
+#include "errors.h"
 
 #define word uint16_t
 #define STACK_SIZE 10 //For now
-
-typedef enum error_type {
-    INVALID_ADDRESS = 1,
-    INVALID_INSTRUCTION,
-    TARGET_ADDRESS_FULL
-}error_type;
 
 class Machine {
 private:
