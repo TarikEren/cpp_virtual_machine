@@ -41,5 +41,4 @@ int main(int argc, char* argv[]) {
         machine.push(string_to_hex(current));
     }
     machine.execute();
-    machine.dump_stack();
 }
