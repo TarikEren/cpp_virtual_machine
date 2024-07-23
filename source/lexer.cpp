@@ -3,7 +3,7 @@
 Lexer::Lexer(const std::string &file_name) {
     std::ifstream file(file_name);
     if (!file.is_open()) {
-        printf("Unable to open file %s\n", file_name.c_str());
+        printf("ERROR: Unable to open file %s\n", file_name.c_str());
         exit(INVALID_FILENAME);
     }
     std::stringstream stream_buffer;
@@ -13,23 +13,8 @@ Lexer::Lexer(const std::string &file_name) {
     this->current = this->file_text[this->index];
 }
 
-void Lexer::print_file_text() {
-    printf("File contents start\n");
-    printf("%s\n", this->file_text.c_str());
-    printf("File contents end\n");
-}
-
-char Lexer::peek() {
-    return this->file_text[this->index + 1];
-}
-
 void Lexer::advance() {
     this->index += 1;
-    this->current = this->file_text[this->index];
-}
-
-void Lexer::step_back() {
-    this->index -= 1;
     this->current = this->file_text[this->index];
 }
 
@@ -75,7 +60,7 @@ void Lexer::tokenize() {
                 //Clear the instruction buffer
                 instruction.clear();
             }
-            //The other keywords work the same way as explained above
+                //The other keywords work the same way as explained above
             else if (buffer == "ADD") {
                 instruction.append("0x1");
                 buffer_clear();
@@ -131,12 +116,4 @@ void Lexer::tokenize() {
         }
         advance();
     }
-}
-
-void Lexer::print_instructions() {
-    printf("Instructions start\n");
-    for (const std::string& instruct: instructions) {
-        printf("%s\n", instruct.c_str());
-    }
-    printf("Instructions end\n");
 }

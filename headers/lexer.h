@@ -22,21 +22,8 @@ public:
     //Iterates through the file_text variable and creates tokens.
     void tokenize();
 
-    //Prints the file_text value.
-    //Used for debugging/checking whether the file has been read properly or not.
-    void print_file_text();
-
-    //Prints the instructions.
-    void print_instructions();
-
-    //Checks the next character and returns it.
-    char peek();
-
     //Moves one character forward in the file_text variable.
     void advance();
-
-    //Moves back one character in file_text variable.
-    void step_back();
 
     //Adds the current character to the buffer.
     void buffer_add();
