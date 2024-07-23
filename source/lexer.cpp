@@ -113,6 +113,12 @@ void Lexer::tokenize() {
                 instructions.push_back(instruction);
                 instruction.clear();
             }
+            else if (buffer == "PRINT") {
+                instruction.append("0xf000");
+                buffer_clear();
+                instructions.push_back(instruction);
+                instruction.clear();
+            }
         }
         advance();
     }
