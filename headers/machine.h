@@ -4,7 +4,9 @@
 #include <iostream>
 #include "errors.h"
 
+#ifndef word
 #define word uint16_t
+#endif
 #define STACK_SIZE 10 //For now
 
 class Machine {
