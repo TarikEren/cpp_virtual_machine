@@ -1,3 +1,4 @@
+#include <cstring>
 #include "headers/machine.h"
 #include "headers/lexer.h"
 
@@ -18,9 +19,19 @@ word string_to_hex(std::string& str) {
     return result;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     Machine machine;
-    Lexer lexer("test.txt"); //TODO: Change this to argv[1] on release.
+    if (argc == 1) {
+        printf("ERROR: No file provided\n");
+        exit(NO_TARGET_FILE_PROVIDED);
+    }
+    std::string filename = argv[1];
+    char ext[5] = {filename[filename.size() - 4], filename[filename.size() - 3], filename[filename.size() - 2], filename[filename.size() - 1], '\0'};
+    if (strcmp(ext, "basm") != 0) {
+        printf("ERROR: Invalid file extension\n");
+        exit(INVALID_FILE_EXT);
+    }
+    Lexer lexer(filename);
     lexer.tokenize();
     std::vector<std::string> instructions = lexer.get_instructions();
     word hex;

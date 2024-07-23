@@ -2,11 +2,12 @@
 #define CPP_VIRTUAL_MACHINE_ERRORS_H
 
 typedef enum error_type {
-    INVALID_ADDRESS = 1,
+    NO_TARGET_FILE_PROVIDED = 1,
+    INVALID_FILE_EXT,
+    INVALID_ADDRESS,
     INVALID_INSTRUCTION,
     TARGET_ADDRESS_FULL,
     INVALID_FILENAME,
 }error_type;
-
 
 #endif
