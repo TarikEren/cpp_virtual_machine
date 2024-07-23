@@ -91,29 +91,35 @@ void Machine::execute() {
         address_check(address);
         word value;
         switch (opcode) {
-            case 1:
+            case 0x1:
                 value = fetch(address);
                 add(value);
                 break;
-            case 2:
+            case 0x2:
                 value = fetch(address);
                 sub(value);
                 break;
-            case 3:
+            case 0x3:
                 load(address);
                 break;
-            case 4:
+            case 0x4:
                 save(address);
                 break;
-            case 5:
+            case 0x5:
                 this->ax = address;
+                break;
+            case 0xf:
+                print();
                 break;
             default:
                 printf("Invalid instruction: %x\n", instruction);
                 exit(INVALID_INSTRUCTION);
 
         }
-        printf("AX: %x\n", this->ax);
         this->pop();
     }
+}
+
+void Machine::print() {
+    printf("OUTPUT: Top of the stack: %hu\n", this->stack[STACK_SIZE-1]);
 }
