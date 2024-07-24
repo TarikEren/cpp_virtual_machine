@@ -10,4 +10,6 @@ add_executable(cpp_virtual_machine main.cpp
         headers/lexer.h
         source/lexer.cpp
         headers/errors.h
+        headers/compiler.h
+        source/compiler.cpp
 )

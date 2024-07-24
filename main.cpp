@@ -1,44 +1,51 @@
 #include <cstring>
-#include "headers/machine.h"
-#include "headers/lexer.h"
+#include "headers/compiler.h"
 
-/*
- * ADD  1XXX
- * SUB  2XXX
- * SAVE 3XXX
- * LOAD 4XXX
- * INT  5XXX
-*/
+//TODO: Add error checking
 
-word string_to_hex(std::string& str) {
-    str = str.substr(1);
-    std::stringstream hex_stream;
-    hex_stream << std::hex << str;
-    word result;
-    hex_stream >> result;
-    return result;
+std::vector<std::string> parse_arguments(const std::string& arguments) {
+    std::vector<std::string> argument_vector{};
+    int i = 0;
+    char current = arguments[i];
+    std::string buffer{};
+    while (current != '\0') {
+        buffer.push_back(current);
+        if (arguments[i+1] == ' ') {
+            i++;
+            current = arguments[i];
+            argument_vector.push_back(buffer);
+            buffer.clear();
+        }
+        i++;
+        current = arguments[i];
+    }
+    argument_vector.push_back(buffer);
+    buffer.clear();
+    return argument_vector;
 }
 
 int main(int argc, char* argv[]) {
-    Machine machine;
-    if (argc == 1) {
-        printf("ERROR: No file provided\n");
-        exit(NO_TARGET_FILE_PROVIDED);
+    std::string command;
+    std::vector<std::string> args;
+    while (command != "exit") {
+        printf("> ");
+        std::getline(std::cin, command);
+        args = parse_arguments(command);
+        if (args[0] == "compile") {
+            if (args[1].empty()) {
+                printf("ERROR: No file provided\n");
+                exit(NO_TARGET_FILE_PROVIDED);
+            }
+            std::string filename = args[1];
+            Compiler compiler;
+            compiler.compile(filename);
+        }
+        else if (command == "exit") {
+            continue;
+        }
+        else {
+            printf("ERROR: Invalid command %s\n", command.c_str());
+        }
     }
-    std::string filename = argv[1];
-    char ext[5] = {filename[filename.size() - 4], filename[filename.size() - 3], filename[filename.size() - 2], filename[filename.size() - 1], '\0'};
-    if (strcmp(ext, "basm") != 0) {
-        printf("ERROR: Invalid file extension\n");
-        exit(INVALID_FILE_EXT);
-    }
-    Lexer lexer(filename);
-    lexer.tokenize();
-    std::vector<std::string> instructions = lexer.get_instructions();
-    word hex;
-    for (int i = int(instructions.size()-1); i > -1; i--) {
-        std::string current = instructions[i];
-        hex = string_to_hex(current);
-        machine.push(string_to_hex(current));
-    }
-    machine.execute();
+    printf("Ending process with exit code %d\n", EXIT_SUCCESS);
 }
