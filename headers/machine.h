@@ -21,16 +21,8 @@ public:
     word pop();
     //Print the stack
     void dump_stack();
-    //Fetch operand from address
-    word fetch(word address);
-    //Add fetched operand to ac value
-    word add(word operand);
-    //Subtract fetched operand from ac value
-    word sub(word operand);
-    //Save ac value to provided address
-    void save(word address);
-    //Load fetched operand and set ac value as said value
-    void load(word address);
+    //Turns address value into an index value
+    int get_index(word);
     //Execute commands on the stack
     void execute();
     //Print the top of the stack

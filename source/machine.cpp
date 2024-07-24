@@ -23,8 +23,8 @@ word Machine::pop() {
     return this->stack[this->stack_ptr];
 }
 
-int get_index(word address) {
-    //This rather dumb solution only works for a fixed addressed memory so change how this function works
+int Machine::get_index(word address) {
+    //This rather dumb solution which only works for a fixed addressed memory so change how this function works
     //if you are going to change how the memory works
     int index = (address / 0x100) * 256 + ((address / 0x10) % 0x10) * 16 + address % 0x10;
     return index;
@@ -38,83 +38,46 @@ void Machine::dump_stack() {
     printf("STACK END\n");
 }
 
-bool address_check(word address) {
-    //Check if the address within bounds of the stack.
-    if (address >= 0 && address <= STACK_SIZE - 1)
-        return true;
-    printf("ERROR: Invalid address %x, ending program\n", address);
-    exit(INVALID_ADDRESS);
-}
-
-word Machine::fetch(word address) {
-    return this->stack[get_index(address)];
-}
-
-word Machine::add(word operand) {
-    //TODO: Add checks for overflows and add an overflow flag with a carry register.
-    //Add to the eax register value.
-    this->ax += operand;
-    return this->ax;
-}
-
-word Machine::sub(word operand) {
-    //TODO: Add checks for underflows.
-    //Subtract from the eax register value.
-    this->ax -= operand;
-    return this->ax;
-}
-
-void Machine::save(word address) {
-    //If it passes the address checks, check if the address is full.
-    if (this->stack[get_index(address)] != 0) {
-        //If so, throw error.
-        printf("Target address %x is full\n", address);
-        exit(TARGET_ADDRESS_FULL);
-    }
-    //If not, save the value to the target.
-    this->stack[get_index(address)] = this->ax;
-}
-
-void Machine::load(word address) {
-    //Fetch operand and set eax value to the fetched operand.
-    int value = fetch(address);
-    this->ax = value;
-}
-
 void Machine::execute() {
     //Execute the instruction on top of the stack.
+    word address{}, operand{}, instruction{}, opcode{}, index{};
     while (this->stack_ptr != -1) {
-        word instruction = this->stack[this->stack_ptr];
-        word opcode = instruction / 0x1000;
-        word address = instruction % 0x1000;
-        //Address check
-        address_check(address);
-        word value;
-        switch (opcode) {
-            case 0x1:
-                value = fetch(address);
-                add(value);
-                break;
-            case 0x2:
-                value = fetch(address);
-                sub(value);
-                break;
-            case 0x3:
-                load(address);
-                break;
-            case 0x4:
-                save(address);
-                break;
-            case 0x5:
-                this->ax = address;
-                break;
-            case 0xf:
-                print();
-                break;
-            default:
-                printf("Invalid instruction: %x\n", instruction);
-                exit(INVALID_INSTRUCTION);
-
+        instruction = this->stack[stack_ptr];
+        opcode = instruction / 0x1000;
+        if (opcode == 0x5) { //Operand including instruction
+            operand = instruction % 0x1000;
+            address = 0x0;
+        }
+        else if (opcode == 0xf) { //No operand / address
+            address = 0x0;
+            operand = 0x0;
+        }
+        else { //Addressed instruction
+            address = instruction % 0x1000;
+            operand = 0x0;
+        }
+        index = get_index(address);
+        if (index < 0 || index >= STACK_SIZE) {
+            printf("Invalid address %x. Ending process with exit code %d\n", address, INVALID_ADDRESS);
+            break;
+        }
+        if (opcode == 0x1) {
+            this->ax += this->stack[index];
+        }
+        else if (opcode == 0x2) {
+            this->ax -= this->stack[index];
+        }
+        else if (opcode == 0x3) {
+            this->ax = this->stack[index];
+        }
+        else if (opcode == 0x4) {
+            this->stack[index] = this->ax;
+        }
+        else if (opcode == 0x5) {
+            this->ax = address;
+        }
+        else if (opcode == 0xf) {
+            printf("Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
         }
         this->pop();
     }
