@@ -3,23 +3,25 @@
 word Machine::push(word new_word) {
     //Buffer overflow
     if (this->stack_ptr == STACK_SIZE - 1) {
-        printf("ERROR: Stack is full. Cannot push to stack\n");
+        logger(FATAL_ERROR, "Stack overflow", STACK_OVERFLOW);
         return -1;
     }
     this->stack_ptr += 1;
     this->stack[this->stack_ptr] = new_word;
-    printf("INFO: Pushed value %x to position %d\n", new_word, this->stack_ptr);
+    std::string message = "Pushed value " + hex_to_string(new_word) + " to position " + int_to_string(this->stack_ptr);
+    logger(INFO, message, NONE);
     return this->stack[this->stack_ptr];
 }
 
 word Machine::pop() {
     //Buffer underflow
     if (this->stack_ptr == -1) {
-        printf("ERROR: Stack is empty. Cannot pop from stack\n");
+        logger(FATAL_ERROR, "Stack underflow", STACK_UNDERFLOW);
         return -1;
     }
     this->stack_ptr -= 1;
-    printf("INFO: Popped value from position %d\n", this->stack_ptr + 1);
+    std::string message = "Popped value from position " + int_to_string(this->stack_ptr + 1);
+    logger(INFO, message, NONE);
     return this->stack[this->stack_ptr];
 }
 
@@ -59,40 +61,59 @@ void Machine::execute() {
         }
         index = get_index(address);
         if (index < 0 || index >= STACK_SIZE) {
-            printf("ERROR: Invalid address %x. Ending process with exit code %d\n", address, INVALID_ADDRESS);
+            std::string message = "Invalid address " + hex_to_string(address);
+            logger(FATAL_ERROR, message, INVALID_ADDRESS);
             break;
         }
         if (opcode == 0x1) {
             this->ax += this->stack[index];
-            printf("INFO: Added value %x to AX\n", this->stack[index]);
+            std::string message = "Added value " + hex_to_string(this->stack[index]) + " to AX";
+            logger(INFO, message, NONE);
         }
         else if (opcode == 0x2) {
             this->ax -= this->stack[index];
-            printf("INFO: Subtracted value %x from AX\n", this->stack[index]);
+            std::string message = "Subtracted value " + hex_to_string(this->stack[index]) + " from AX";
+            logger(INFO, message, NONE);
         }
         else if (opcode == 0x3) {
             this->ax = this->stack[index];
-            printf("INFO: Loaded value %x from address %x / index %d\n", this->stack[index], address, index);
+            std::string message = "Loaded value " + hex_to_string(this->stack[index]) + " from address" + hex_to_string(address);
+            logger(INFO, message, NONE);
         }
         else if (opcode == 0x4) {
             if (this->stack[index] != 0x0) {
-                printf("ERROR: Target address %x / index %d is full. Ending process with exit code %d\n", address, index, TARGET_ADDRESS_FULL);
+                std::string message = "Target address " + hex_to_string(address) + " is full";
+                logger(FATAL_ERROR, message, TARGET_ADDRESS_FULL);
                 end_process = true;
             }
             this->stack[index] = this->ax;
-            printf("INFO: Saved value %x to address %x / index %x\n", this->ax, address, index);
+            std::string message = "Saved value " + hex_to_string(this->ax) + " to address " + hex_to_string(address);
+            logger(INFO, message, NONE);
         }
         else if (opcode == 0x5) {
             this->ax = operand;
-            printf("INFO: Set AX as %x\n", operand);
+            std::string message = "Set AX as " + hex_to_string(operand);
+            logger(INFO, message, NONE);
         }
         else if (opcode == 0xf) {
-            printf("OUTPUT: Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
+            printf("\x1b[32mOUTPUT:\x1b[0m Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
         }
         if (!end_process) this->pop();
     }
 }
 
-void Machine::print() {
-    printf("OUTPUT: Top of the stack: %hu\n", this->stack[STACK_SIZE-1]);
+std::string Machine::hex_to_string(word hex) {
+    std::string result;
+    std::stringstream ss;
+    ss << std::hex << hex;
+    result = ss.str();
+    return result;
+}
+
+std::string Machine::int_to_string(int val) {
+    std::string result;
+    std::stringstream ss;
+    ss << val;
+    result = ss.str();
+    return result;
 }
