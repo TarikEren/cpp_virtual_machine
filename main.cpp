@@ -1,8 +1,8 @@
 #include "headers/compiler.h"
+#include "headers/logger.h"
 
 //TODO: Add a makefile for building on release.
-//TODO: Change the machine logic so that it doesn't kill the entire program when it encounters a problem.
-//TODO: Add error checking
+//TODO: Add error checking in the lexer
 //      Check for value out of bounds in lexer
 
 std::vector<std::string> parse_arguments(const std::string& arguments) {
@@ -34,14 +34,17 @@ int main(int argc, char* argv[]) {
         std::getline(std::cin, command);
         args = parse_arguments(command);
         if (args[0] == "compile") {
-            if (args[1].empty()) {
-                printf("ERROR: No file provided\n");
+            if (args.size() == 1) {
+                logger(ERROR, "No file provided", FILE_NOT_PROVIDED);
             }
             else {
-                std::string filename = args[1];
+                std::string file_name = args[1];
                 Compiler compiler;
-                compiler.compile(filename);
+                compiler.compile(file_name);
             }
+        }
+        else if (command == "shell") {
+
         }
         else if (command == "exit") {
             continue;
@@ -50,5 +53,5 @@ int main(int argc, char* argv[]) {
             printf("ERROR: Invalid command %s\n", command.c_str());
         }
     }
-    printf("Ending process with exit code %d\n", EXIT_SUCCESS);
+    logger(INFO, "Ending process with exit code 0", SUCCESS);
 }
