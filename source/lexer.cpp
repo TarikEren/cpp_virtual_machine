@@ -3,7 +3,9 @@
 Lexer::Lexer(const std::string &file_name) {
     std::ifstream file(file_name);
     if (!file.is_open()) {
-        printf("ERROR: Unable to open file %s\nExiting with exit code %d\n", file_name.c_str(), FILE_NOT_FOUND);
+        std::string message = "Unable to open file " + file_name;
+        logger(ERROR, message, FILE_NOT_FOUND);
+        this->file_text = "";
         return;
     }
     std::stringstream stream_buffer;
