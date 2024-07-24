@@ -5,7 +5,6 @@
 #include "errors.h"
 
 typedef enum level{
-    NONE,
     INFO,
     WARNING,
     ERROR,
