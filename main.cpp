@@ -1,6 +1,8 @@
 #include <cstring>
 #include "headers/compiler.h"
 
+//TODO: Add a makefile for building on release.
+//TODO: Change the machine logic so that it doesn't kill the entire program when it encounters a problem.
 //TODO: Add error checking
 
 std::vector<std::string> parse_arguments(const std::string& arguments) {
