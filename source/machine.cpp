@@ -91,7 +91,6 @@ void Machine::execute() {
         }
         if (!end_process) this->pop();
     }
-    this->dump_stack();
 }
 
 void Machine::print() {
