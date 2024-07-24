@@ -9,7 +9,8 @@ typedef enum error_type {
     INVALID_ADDRESS = 100,
     INVALID_INSTRUCTION,
     STACK_OVERFLOW,
-    STACK_UNDERFLOW
+    STACK_UNDERFLOW,
+    NONE = 0xfffff
 }error_type;
 
 #endif
