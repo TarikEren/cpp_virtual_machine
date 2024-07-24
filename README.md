@@ -1,14 +1,17 @@
 # cpp_virtual_machine
 
-A RISC architecture machine simulation made in c++ (Still work in progress, functionality might change drastically.)
-For now only it only works as a compiler. New functionalities might be added in the future.
+A shell made in c++ that takes in commands and manipulates a basic computer simulation made in c++ (Still work in progress, functionality might change drastically.)
 
 ### Usage
 
-./cpp_virtual_machine filename.basm
+Simply build and run ./cpp_virtual_machine (Will add a makefile in the future.)
 
+### Shell commands (Will add more)
 
-### Functions
+compile: Compiles a .basm file and executes machine functions.
+  Usage: compile filename.basm
+
+### Assembler language
 
 | Function name | Hex value | Description                                                                           |
 |---------------|-----------|---------------------------------------------------------------------------------------|
