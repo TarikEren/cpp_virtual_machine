@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include "errors.h"
+#include "logger.h"
 
 class Lexer {
 private:
@@ -30,6 +31,11 @@ public:
 
     //Clears the buffer.
     void buffer_clear();
+
+    bool is_file_text_full() {
+        if (file_text.empty()) return false;
+        return true;
+    }
 
     std::vector<std::string> get_instructions() {
         return this->instructions;
