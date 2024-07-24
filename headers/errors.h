@@ -3,11 +3,12 @@
 
 typedef enum error_type {
     NO_TARGET_FILE_PROVIDED = 1,
-    INVALID_FILE_EXT,
     INVALID_ADDRESS,
     INVALID_INSTRUCTION,
     TARGET_ADDRESS_FULL,
-    INVALID_FILENAME,
+    FILE_NOT_FOUND,
+    STACK_OVERFLOW,
+    STACK_UNDERFLOW
 }error_type;
 
 #endif
