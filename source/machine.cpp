@@ -41,7 +41,8 @@ void Machine::dump_stack() {
 void Machine::execute() {
     //Execute the instruction on top of the stack.
     word address{}, operand{}, instruction{}, opcode{}, index{};
-    while (this->stack_ptr != -1) {
+    bool end_process = false;
+    while (this->stack_ptr != -1 && !end_process) {
         instruction = this->stack[stack_ptr];
         opcode = instruction / 0x1000;
         if (opcode == 0x5) { //Operand including instruction
@@ -58,29 +59,39 @@ void Machine::execute() {
         }
         index = get_index(address);
         if (index < 0 || index >= STACK_SIZE) {
-            printf("Invalid address %x. Ending process with exit code %d\n", address, INVALID_ADDRESS);
+            printf("ERROR: Invalid address %x. Ending process with exit code %d\n", address, INVALID_ADDRESS);
             break;
         }
         if (opcode == 0x1) {
             this->ax += this->stack[index];
+            printf("INFO: Added value %x to AX\n", this->stack[index]);
         }
         else if (opcode == 0x2) {
             this->ax -= this->stack[index];
+            printf("INFO: Subtracted value %x from AX\n", this->stack[index]);
         }
         else if (opcode == 0x3) {
             this->ax = this->stack[index];
+            printf("INFO: Loaded value %x from address %x / index %d\n", this->stack[index], address, index);
         }
         else if (opcode == 0x4) {
+            if (this->stack[index] != 0x0) {
+                printf("ERROR: Target address %x / index %d is full. Ending process with exit code %d\n", address, index, TARGET_ADDRESS_FULL);
+                end_process = true;
+            }
             this->stack[index] = this->ax;
+            printf("INFO: Saved value %x to address %x / index %x\n", this->ax, address, index);
         }
         else if (opcode == 0x5) {
-            this->ax = address;
+            this->ax = operand;
+            printf("INFO: Set AX as %x\n", operand);
         }
         else if (opcode == 0xf) {
-            printf("Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
+            printf("OUTPUT: Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
         }
-        this->pop();
+        if (!end_process) this->pop();
     }
+    this->dump_stack();
 }
 
 void Machine::print() {

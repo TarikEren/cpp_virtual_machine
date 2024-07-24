@@ -36,11 +36,12 @@ int main(int argc, char* argv[]) {
         if (args[0] == "compile") {
             if (args[1].empty()) {
                 printf("ERROR: No file provided\n");
-                exit(NO_TARGET_FILE_PROVIDED);
             }
-            std::string filename = args[1];
-            Compiler compiler;
-            compiler.compile(filename);
+            else {
+                std::string filename = args[1];
+                Compiler compiler;
+                compiler.compile(filename);
+            }
         }
         else if (command == "exit") {
             continue;
