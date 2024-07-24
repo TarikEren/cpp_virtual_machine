@@ -1,5 +1,4 @@
 #include "../headers/compiler.h"
-#include <cstring>
 
 word string_to_hex(std::string& str) {
     str = str.substr(1);
@@ -14,6 +13,7 @@ word string_to_hex(std::string& str) {
 void Compiler::compile(const std::string& filename) {
     Machine machine;
     Lexer lexer(filename);
+    if (!lexer.is_file_text_full()) return;
     lexer.tokenize();
     std::vector<std::string> instructions = lexer.get_instructions();
     word hex;
