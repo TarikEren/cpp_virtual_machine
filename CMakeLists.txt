@@ -12,4 +12,6 @@ add_executable(cpp_virtual_machine main.cpp
         headers/errors.h
         headers/compiler.h
         source/compiler.cpp
+        headers/logger.h
+        source/logger.cpp
 )
