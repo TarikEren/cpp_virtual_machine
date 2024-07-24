@@ -2,6 +2,7 @@
 #define CPP_VIRTUAL_MACHINE_MACHINE_H
 
 #include <iostream>
+#include <sstream>
 #include "errors.h"
 #include "logger.h"
 
@@ -31,9 +32,9 @@ public:
     //Execute commands on the stack
     void execute();
 
-    //Print the top of the stack
-    //TODO: Might change this to an addressed instruction and print a fetched operand.
-    void print();
+    std::string hex_to_string(word hex);
+
+    std::string int_to_string(int val);
 };
 
 
