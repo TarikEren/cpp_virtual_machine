@@ -8,6 +8,7 @@ class Compiler {
 public:
     Compiler() = default;
     void compile(const std::string& filename);
+    void compile(Lexer lexer_obj);
 };
 
 #endif

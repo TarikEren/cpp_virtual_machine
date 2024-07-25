@@ -24,3 +24,16 @@ void Compiler::compile(const std::string& filename) {
     }
     machine.execute();
 }
+
+void Compiler::compile(Lexer lexer) {
+    Machine machine;
+    lexer.tokenize();
+    std::vector<std::string> instructions = lexer.get_instructions();
+    word hex;
+    for (int i = int(instructions.size()-1); i > -1; i--) {
+        std::string current = instructions[i];
+        hex = string_to_hex(current); //For some reason the program doesn't work properly when this line is removed.
+        machine.push(string_to_hex(current));
+    }
+    machine.execute();
+}
