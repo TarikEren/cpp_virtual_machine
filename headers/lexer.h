@@ -25,10 +25,6 @@ public:
 
     void set_file_text(const std::string& text);
 
-    std::string get_file_test() {
-        return this->file_text;
-    }
-
     //Iterates through the file_text variable and creates tokens.
     void tokenize();
 
