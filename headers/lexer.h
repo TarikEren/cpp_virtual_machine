@@ -20,6 +20,15 @@ public:
     //Takes a file_name argument and reads target file using ifstream.
     explicit Lexer(const std::string& file_name);
 
+    //Constructor
+    explicit Lexer() = default;
+
+    void set_file_text(const std::string& text);
+
+    std::string get_file_test() {
+        return this->file_text;
+    }
+
     //Iterates through the file_text variable and creates tokens.
     void tokenize();
 
@@ -32,11 +41,13 @@ public:
     //Clears the buffer.
     void buffer_clear();
 
+    //Checks if the file_text variable is full.
     bool is_file_text_full() {
         if (file_text.empty()) return false;
         return true;
     }
 
+    //Returns the parsed instructions.
     std::vector<std::string> get_instructions() {
         return this->instructions;
     }
