@@ -4,6 +4,7 @@
 #include <string>
 #include "errors.h"
 
+//Logging levels
 typedef enum level{
     INFO,
     WARNING,

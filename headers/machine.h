@@ -12,9 +12,13 @@
 
 class Machine {
 private:
+    //Stack size
     static constexpr size_t STACK_SIZE = 10; //In case of an error, try using a define macro to define this variable.
+    //The actual stack
     word stack[STACK_SIZE]{0};
+    //AX register. Used for mathematical operations.
     word ax = 0x0;
+    //Stack pointer.
     int stack_ptr = -1;
 public:
     //Push the provided word onto the stack
@@ -32,8 +36,10 @@ public:
     //Execute commands on the stack
     void execute();
 
+    //Turns hex values into strings
     std::string hex_to_string(word hex);
 
+    //Turns int values into strings
     std::string int_to_string(int val);
 };
 
