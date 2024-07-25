@@ -11,8 +11,6 @@ Lexer::Lexer(const std::string &file_name) {
     std::stringstream stream_buffer;
     stream_buffer << file.rdbuf();
     this->file_text = stream_buffer.str();
-    this->index = 0;
-    this->current = this->file_text[this->index];
 }
 
 void Lexer::advance() {
@@ -31,6 +29,8 @@ void Lexer::buffer_clear() {
 void Lexer::tokenize() {
     //Instruction buffer for pushing onto instructions vector.
     std::string instruction{};
+    this->index = 0;
+    this->current = this->file_text[this->index];
     while (current != '\0') {
         while (isalnum(current)) {
             //Push char onto buffer
@@ -124,4 +124,8 @@ void Lexer::tokenize() {
         }
         advance();
     }
+}
+
+void Lexer::set_file_text(const std::string &text) {
+    this->file_text = text;
 }
