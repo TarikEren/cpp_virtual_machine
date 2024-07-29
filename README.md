@@ -2,7 +2,7 @@
 
 A cli program made in c++ that takes in commands and manipulates a basic computer simulation made in c++ (Still work in progress, functionality might change drastically.)
 
-(Will add a makefile in the future.)
+(Will add a build system in the future.)
 
 ### Usage
 
