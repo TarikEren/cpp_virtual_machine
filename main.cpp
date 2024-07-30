@@ -1,7 +1,7 @@
 #include "headers/compiler.h"
+#include "headers/create.h"
 #include <fstream>
 
-//TODO: Add comments.
 //TODO: A general refactoring.
 //      Group functions in include files
 //TODO: Might remove lexer.h and use those functions in compiler.h
@@ -50,7 +50,7 @@ bool ext_check(const std::string& filename) {
     return true;
 }
 
-int main(int argc, char* argv[]) {
+int main() {
 
     //Input and command buffers.
     //Input refers to the primary user input. It can be a command with arguments.
@@ -106,56 +106,12 @@ int main(int argc, char* argv[]) {
                 //If no file name was provided, log this.
                 logger(FATAL_ERROR, "No file name provided", FILENAME_NOT_PROVIDED);
             }
-
-            //File object.
-            std::fstream file;
             //File name
             std::string filename = args[1];
             //If the provided file name doesn't have a .basm extension,
             //append one to the file name.
             if (!ext_check(filename)) filename += ".basm";
-            //Create a file with that name.
-            file.open(filename, std::ios::out);
-            //TODO: Add checks for existing files.
-            if (!file.is_open()) {
-                //If the file could not be opened, log this.
-                logger(FATAL_ERROR, "File could not open", COULD_NOT_OPEN_FILE);
-            }
-            else {
-                //Buffer is for storing each line and contents is for storing
-                //the entire file.
-                std::string buffer{}, contents{};
-                while (buffer != "END") {
-                    //Until the user sends a buffer containing the word "END"
-                    //Carriage return and print line starter.
-                    printf("\r>>> ");
-                    //Get a line from the user and save it into the buffer.
-                    std::getline(std::cin, buffer);
-                    if (!buffer.empty() && buffer != "END") {
-                        //If the buffer is not empty nor is it "END"
-                        //push a newline onto the buffer.
-                        buffer.push_back('\n');
-                        //Append the buffer to the contents variable
-                        contents.append(buffer);
-                        //Clear the buffer.
-                        buffer.clear();
-                    }
-                }
-                //Lexer object
-                Lexer lexer;
-                //Set the file_text variable as the contents variable.
-                //file_text variable is the main string that the tokenizer
-                //operates on.
-                lexer.set_file_text(contents);
-                //Compiler object
-                Compiler compiler;
-                //Compile using the provided lexer object.
-                compiler.compile(lexer);
-                //Write the contents on to the open file.
-                file << contents;
-                //Close said file.
-                file.close();
-            }
+            create_basm(filename);
         }
         else if (command == "exit") {
             //If the user types in "exit" continue
