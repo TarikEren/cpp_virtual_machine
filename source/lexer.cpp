@@ -5,17 +5,17 @@ Lexer::Lexer(const std::string &file_name) {
     if (!file.is_open()) {
         std::string message = "Unable to open file " + file_name;
         logger(ERROR, message, FILE_NOT_FOUND);
-        this->file_text = "";
+        this->text = "";
         return;
     }
     std::stringstream stream_buffer;
     stream_buffer << file.rdbuf();
-    this->file_text = stream_buffer.str();
+    this->text = stream_buffer.str();
 }
 
 void Lexer::advance() {
     this->index += 1;
-    this->current = this->file_text[this->index];
+    this->current = this->text[this->index];
 }
 
 void Lexer::buffer_add() {
@@ -30,9 +30,12 @@ void Lexer::tokenize() {
     //Instruction buffer for pushing onto instructions vector.
     std::string instruction{};
     this->index = 0;
-    this->current = this->file_text[this->index];
+    this->current = this->text[this->index];
+    printf("Text: %s\n", text.c_str());
     while (current != '\0') {
         while (isalnum(current)) {
+            printf("Current: %d, %c\n", this->current, this->current);
+            printf("Index: %ld\n", this->index);
             //Push char onto buffer
             buffer_add();
             //Advance further
@@ -126,6 +129,11 @@ void Lexer::tokenize() {
     }
 }
 
-void Lexer::set_file_text(const std::string &text) {
-    this->file_text = text;
+void Lexer::set_file_text(const std::string &new_text) {
+    this->text = new_text;
+}
+
+char Lexer::peek() {
+    if (this->current == '\0') return '\0';
+    else return this->text[this->index + 1];
 }

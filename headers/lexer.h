@@ -11,7 +11,7 @@
 class Lexer {
 private:
     char current{};
-    std::string file_text{}, buffer{};
+    std::string text{}, buffer{};
     size_t index{};
     std::vector<std::string> instructions{};
 public:
@@ -23,12 +23,15 @@ public:
     //Constructor
     explicit Lexer() = default;
 
-    void set_file_text(const std::string& text);
+    void set_file_text(const std::string& new_text);
 
-    //Iterates through the file_text variable and creates tokens.
+    //Iterates through the text variable and creates tokens.
     void tokenize();
 
-    //Moves one character forward in the file_text variable.
+    //Returns the next character.
+    char peek();
+
+    //Moves one character forward in the text variable.
     void advance();
 
     //Adds the current character to the buffer.
@@ -37,9 +40,9 @@ public:
     //Clears the buffer.
     void buffer_clear();
 
-    //Checks if the file_text variable is full.
+    //Checks if the text variable is full.
     bool is_file_text_full() {
-        if (file_text.empty()) return false;
+        if (text.empty()) return false;
         return true;
     }
 
