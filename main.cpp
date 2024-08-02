@@ -4,14 +4,10 @@
 
 //TODO: A general refactoring.
 //      Group functions in include files
-//TODO: Might remove lexer.h and use those functions in compiler.h
-//TODO: Add a makefile for building on release.
 //TODO: Add error checking in the lexer
 //      Check for value out of bounds in lexer
 //TODO: Add error checking in the shell
 //      Check for valid opcode-operand pairs (i.e. print command doesn't take any operands)
-//TODO: Display error codes as error values (i.e. INVALID_COMMAND)
-//TODO: After exiting the shell, program prints out another > for some reason. Fix it.
 
 void clear_screen() {
     printf("\033[2J\033[H");
@@ -102,16 +98,21 @@ int main() {
             //It simply takes lines from the user, appends them and pushes them
             //into a buffer which gets taken by the lexer and gets tokenized.
             //Then the machine executes the corresponding functions.
+            for (const auto& arg : args) {
+                printf("%s\n", arg.c_str());
+            }
             if (args.size() == 1) {
                 //If no file name was provided, log this.
                 logger(FATAL_ERROR, "No file name provided", FILENAME_NOT_PROVIDED);
             }
-            //File name
-            std::string filename = args[1];
-            //If the provided file name doesn't have a .basm extension,
-            //append one to the file name.
-            if (!ext_check(filename)) filename += ".basm";
-            create_basm(filename);
+            else {
+                //File name
+                std::string filename = args[1];
+                //If the provided file name doesn't have a .basm extension,
+                //append one to the file name.
+                if (!ext_check(filename)) filename += ".basm";
+                create_basm(filename);
+            }
         }
         else if (command == "exit") {
             //If the user types in "exit" continue
