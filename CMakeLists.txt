@@ -15,4 +15,5 @@ add_executable(cpp_virtual_machine main.cpp
         headers/logger.h
         source/logger.cpp
         headers/create.h
+        source/create.cpp
 )
