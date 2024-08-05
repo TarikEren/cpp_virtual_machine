@@ -3,7 +3,6 @@
 #include <fstream>
 
 //TODO: A general refactoring.
-//      Group functions in include files
 //TODO: Add error checking in the lexer
 //      Check for value out of bounds in lexer
 //TODO: Add error checking in the shell
@@ -47,7 +46,6 @@ bool ext_check(const std::string& filename) {
 }
 
 int main() {
-
     //Input and command buffers.
     //Input refers to the primary user input. It can be a command with arguments.
     //Command refers to the actual executable command.
