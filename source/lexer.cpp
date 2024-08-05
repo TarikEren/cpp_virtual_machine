@@ -31,98 +31,103 @@ void Lexer::tokenize() {
     std::string instruction{};
     this->index = 0;
     this->current = this->text[this->index];
-    printf("Text: %s\n", text.c_str());
     while (current != '\0') {
         while (isalnum(current)) {
-            printf("Current: %d, %c\n", this->current, this->current);
-            printf("Index: %ld\n", this->index);
             //Push char onto buffer
             buffer_add();
             //Advance further
             advance();
-            //If INT instruction has been encountered
-            if (buffer == "INT") {
-                //Use the 0x5 prefix
-                instruction.append("0x5");
-                //Clear the buffer
-                buffer_clear();
-                //Advance further
-                advance();
-                //Until the newline character
-                while (current != '\n') {
-                    //TODO: Add checks here
-                    //Push char onto buffer
-                    buffer_add();
+            if (current == '\n' || current == ' ') {
+                //If INT instruction has been encountered
+                if (buffer == "INT") {
+                    //Use the 0x5 prefix
+                    instruction.append("0x5");
+                    //Clear the buffer
+                    buffer_clear();
                     //Advance further
                     advance();
+                    //Until the newline character
+                    while (current != '\n') {
+                        //TODO: Add checks here
+                        //Push char onto buffer
+                        buffer_add();
+                        //Advance further
+                        advance();
+                    }
+                    //Append the buffer onto the instruction
+                    instruction.append(buffer);
+                    //Clear the buffer
+                    buffer_clear();
+                    //Push the instruction onto instructions
+                    instructions.push_back(instruction);
+                    //Clear the instruction buffer
+                    instruction.clear();
                 }
-                //Append the buffer onto the instruction
-                instruction.append(buffer);
-                //Clear the buffer
-                buffer_clear();
-                //Push the instruction onto instructions
-                instructions.push_back(instruction);
-                //Clear the instruction buffer
-                instruction.clear();
-            }
-                //The other keywords work the same way as explained above
-            else if (buffer == "ADD") {
-                instruction.append("0x1");
-                buffer_clear();
-                advance();
-                while (current != '\n') {
-                    buffer_add();
+                    //The other keywords work the same way as explained above
+                else if (buffer == "ADD") {
+                    instruction.append("0x1");
+                    buffer_clear();
                     advance();
+                    while (current != '\n') {
+                        buffer_add();
+                        advance();
+                    }
+                    instruction.append(buffer);
+                    buffer_clear();
+                    instructions.push_back(instruction);
+                    instruction.clear();
                 }
-                instruction.append(buffer);
-                buffer_clear();
-                instructions.push_back(instruction);
-                instruction.clear();
-            }
-            else if (buffer == "SUB") {
-                instruction.append("0x2");
-                buffer_clear();
-                advance();
-                while (current != '\n') {
-                    buffer_add();
+                else if (buffer == "SUB") {
+                    instruction.append("0x2");
+                    buffer_clear();
                     advance();
+                    while (current != '\n') {
+                        buffer_add();
+                        advance();
+                    }
+                    instruction.append(buffer);
+                    buffer_clear();
+                    instructions.push_back(instruction);
+                    instruction.clear();
                 }
-                instruction.append(buffer);
-                buffer_clear();
-                instructions.push_back(instruction);
-                instruction.clear();
-            }
-            else if (buffer == "LOAD") {
-                instruction.append("0x3");
-                buffer_clear();
-                advance();
-                while (current != '\n') {
-                    buffer_add();
+                else if (buffer == "LOAD") {
+                    instruction.append("0x3");
+                    buffer_clear();
                     advance();
+                    while (current != '\n') {
+                        buffer_add();
+                        advance();
+                    }
+                    instruction.append(buffer);
+                    buffer_clear();
+                    instructions.push_back(instruction);
+                    instruction.clear();
                 }
-                instruction.append(buffer);
-                buffer_clear();
-                instructions.push_back(instruction);
-                instruction.clear();
-            }
-            else if (buffer == "SAVE") {
-                instruction.append("0x4");
-                buffer_clear();
-                advance();
-                while (current != '\n') {
-                    buffer_add();
+                else if (buffer == "SAVE") {
+                    instruction.append("0x4");
+                    buffer_clear();
                     advance();
+                    while (current != '\n') {
+                        buffer_add();
+                        advance();
+                    }
+                    instruction.append(buffer);
+                    buffer_clear();
+                    instructions.push_back(instruction);
+                    instruction.clear();
                 }
-                instruction.append(buffer);
-                buffer_clear();
-                instructions.push_back(instruction);
-                instruction.clear();
-            }
-            else if (buffer == "PRINT") {
-                instruction.append("0xf000");
-                buffer_clear();
-                instructions.push_back(instruction);
-                instruction.clear();
+                else if (buffer == "PRINT") {
+                    instruction.append("0xf000");
+                    buffer_clear();
+                    instructions.push_back(instruction);
+                    instruction.clear();
+                }
+                else {
+                    logger(FATAL_ERROR, "Invalid instruction " + buffer, INVALID_INSTRUCTION);
+                    buffer_clear();
+                    this->instructions.clear();
+                    this->text.clear();
+                }
             }
         }
         advance();
