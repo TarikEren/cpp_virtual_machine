@@ -21,7 +21,6 @@ std::vector<std::string> parse_arguments(const std::string& arguments) {
         buffer.push_back(current);
         if (arguments[i+1] == ' ') {
             i++;
-            current = arguments[i];
             argument_vector.push_back(buffer);
             buffer.clear();
         }
