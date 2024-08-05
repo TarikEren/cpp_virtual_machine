@@ -19,8 +19,8 @@ void Compiler::compile(const std::string& filename) {
     word hex;
     for (int i = int(instructions.size()-1); i > -1; i--) {
         std::string current = instructions[i];
-        hex = string_to_hex(current); //For some reason the program doesn't work properly when this line is removed.
-        machine.push(string_to_hex(current));
+        hex = string_to_hex(current);
+        machine.push(hex);
     }
     machine.execute();
 }
