@@ -61,39 +61,32 @@ void Machine::execute() {
         }
         index = get_index(address);
         if (index < 0 || index >= STACK_SIZE) {
-            std::string message = "Invalid address " + hex_to_string(address);
-            logger(FATAL_ERROR, message, INVALID_ADDRESS);
+            logger(FATAL_ERROR, "Invalid address " + hex_to_string(address), INVALID_ADDRESS);
             break;
         }
         if (opcode == 0x1) {
             this->ax += this->stack[index];
-            std::string message = "Added value " + hex_to_string(this->stack[index]) + " to AX";
-            logger(INFO, message, NONE);
+            logger(INFO, "Added value " + hex_to_string(this->stack[index]) + " to AX", NONE);
         }
         else if (opcode == 0x2) {
             this->ax -= this->stack[index];
-            std::string message = "Subtracted value " + hex_to_string(this->stack[index]) + " from AX";
-            logger(INFO, message, NONE);
+            logger(INFO, "Subtracted value " + hex_to_string(this->stack[index]) + " from AX", NONE);
         }
         else if (opcode == 0x3) {
             this->ax = this->stack[index];
-            std::string message = "Loaded value " + hex_to_string(this->stack[index]) + " from address" + hex_to_string(address);
-            logger(INFO, message, NONE);
+            logger(INFO, "Loaded value " + hex_to_string(this->stack[index]) + " from address" + hex_to_string(address), NONE);
         }
         else if (opcode == 0x4) {
             if (this->stack[index] != 0x0) {
-                std::string message = "Target address " + hex_to_string(address) + " is full";
-                logger(FATAL_ERROR, message, TARGET_ADDRESS_FULL);
+                logger(FATAL_ERROR, "Target address " + hex_to_string(address) + " is full", TARGET_ADDRESS_FULL);
                 end_process = true;
             }
             this->stack[index] = this->ax;
-            std::string message = "Saved value " + hex_to_string(this->ax) + " to address " + hex_to_string(address);
-            logger(INFO, message, NONE);
+            logger(INFO, "Saved value " + hex_to_string(this->ax) + " to address " + hex_to_string(address), NONE);
         }
         else if (opcode == 0x5) {
             this->ax = operand;
-            std::string message = "Set AX as " + hex_to_string(operand);
-            logger(INFO, message, NONE);
+            logger(INFO, "Set AX as " + hex_to_string(operand), NONE);
         }
         else if (opcode == 0xf) {
             printf("\x1b[32mOUTPUT:\x1b[0m Top of the stack: %x\n", this->stack[STACK_SIZE-1]);
