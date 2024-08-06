@@ -7,49 +7,47 @@
 #include <vector>
 #include "errors.h"
 #include "logger.h"
+#include "definitions.h"
 
 class Lexer {
 private:
     char current{};
-    std::string text{}, buffer{};
+    std::string text{};
     size_t index{};
     std::vector<std::string> instructions{};
 public:
     //Constructor
-    //Initialises values.
-    //Takes a file_name argument and reads target file using ifstream.
-    explicit Lexer(const std::string& file_name);
-
-    //Constructor
     explicit Lexer() = default;
 
-    void set_file_text(const std::string& new_text);
+    //Reads file and sets the text variable
+    void read_file(const std::string&);
+
+    //Sets the file_text variable
+    void set_file_text(const std::string&);
 
     //Iterates through the text variable and creates tokens.
     void tokenize();
 
     //Returns the next character.
-    char peek();
+    char peek(int);
 
     //Moves one character forward in the text variable.
     void advance();
-
-    //Adds the current character to the buffer.
-    void buffer_add();
-
-    //Clears the buffer.
-    void buffer_clear();
-
-    //Checks if the text variable is full.
-    bool is_file_text_full() {
-        if (text.empty()) return false;
-        return true;
-    }
 
     //Returns the parsed instructions.
     std::vector<std::string> get_instructions() {
         return this->instructions;
     }
+
+    //Transforms a string to a hex value
+    static word string_to_hex(std::string&);
+
+    //Checks if an operand is in bounds.
+    static bool operand_in_bounds(std::string&);
+
+    static bool char_is_hex(char);
+
+    bool operand_exists(char);
 };
 
 

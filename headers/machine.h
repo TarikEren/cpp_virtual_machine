@@ -5,10 +5,8 @@
 #include <sstream>
 #include "errors.h"
 #include "logger.h"
+#include "definitions.h"
 
-#ifndef word
-#define word uint16_t
-#endif
 
 class Machine {
 private:
@@ -28,19 +26,19 @@ public:
     word pop();
 
     //Print the stack
-    void dump_stack();
+    [[maybe_unused]] void dump_stack();
 
     //Turns address value into an index value
-    int get_index(word);
+    static int get_index(word);
 
     //Execute commands on the stack
     void execute();
 
     //Turns hex values into strings
-    std::string hex_to_string(word hex);
+    static std::string hex_to_string(word hex);
 
     //Turns int values into strings
-    std::string int_to_string(int val);
+    static std::string int_to_string(int val);
 };
 
 
