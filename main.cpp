@@ -3,10 +3,8 @@
 #include <fstream>
 
 //TODO: A general refactoring.
-//TODO: Add error checking in the lexer
-//      Check for value out of bounds in lexer
-//TODO: Add error checking in the shell
-//      Check for valid opcode-operand pairs (i.e. print command doesn't take any operands)
+//      Change the logger function
+//TODO: Add existing file checks.
 
 void clear_screen() {
     printf("\033[2J\033[H");
@@ -58,7 +56,6 @@ int main() {
         //Return to the beginning and print the line starter.
         printf("\r> ");
         //Get user input.
-        //TODO: Check for empty input.
         std::getline(std::cin, input);
         //Parse said user input.
         args = parse_arguments(input);
@@ -75,10 +72,12 @@ int main() {
             else {
                 //The second arg has to be the file name.
                 std::string file_name = args[1];
-                //Compiler object.
-                Compiler compiler;
+                //Lexer obj
+                Lexer lexer;
+                //Read file and set text as said file's contents
+                lexer.read_file(file_name);
                 //Actual compiler function.
-                compiler.compile(file_name);
+                Compiler::compile(lexer);
             }
         }
         else if (command == "clear"){
@@ -104,11 +103,17 @@ int main() {
             }
             else {
                 //File name
-                std::string filename = args[1];
+                std::string file_name = args[1];
                 //If the provided file name doesn't have a .basm extension,
                 //append one to the file name.
-                if (!ext_check(filename)) filename += ".basm";
-                create_basm(filename);
+                if (!ext_check(file_name)) file_name += ".basm";
+                std::fstream file_check(file_name, std::ios::in);
+                if (!file_check.is_open()) {
+                    create_basm(file_name);
+                }
+                else {
+                    logger(ERROR, "File already exists", FILE_EXISTS);
+                }
             }
         }
         else if (command == "exit") {
