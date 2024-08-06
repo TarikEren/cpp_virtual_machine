@@ -42,7 +42,7 @@ void Machine::dump_stack() {
 
 void Machine::execute() {
     //Execute the instruction on top of the stack.
-    word address{}, operand{}, instruction{}, opcode{}, index{};
+    word address, operand, instruction, opcode, index;
     bool end_process = false;
     while (this->stack_ptr != -1 && !end_process) {
         instruction = this->stack[stack_ptr];
