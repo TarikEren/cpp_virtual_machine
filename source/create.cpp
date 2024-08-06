@@ -36,10 +36,8 @@ void create_basm(const std::string& new_filename) {
         //text variable is the main string that the tokenizer
         //operates on.
         lexer.set_file_text(contents);
-        //Compiler object
-        Compiler compiler;
         //Compile using the provided lexer object.
-        compiler.compile(lexer);
+        Compiler::compile(lexer);
         //Write the contents on to the open file.
         file << contents;
         //Close said file.
