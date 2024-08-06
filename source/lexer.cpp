@@ -110,6 +110,8 @@ void Lexer::tokenize() {
                         operand.push_back(current);
                         advance();
                     }
+                    line += 1;
+                    col = 1;
                     instruction.append(operand);
                     operand.clear();
                     instructions.push_back(instruction);
@@ -140,6 +142,8 @@ void Lexer::tokenize() {
                         operand.push_back(current);
                         advance();
                     }
+                    line += 1;
+                    col = 1;
                     instruction.append(operand);
                     operand.clear();
                     instructions.push_back(instruction);
@@ -170,6 +174,8 @@ void Lexer::tokenize() {
                         operand.push_back(current);
                         advance();
                     }
+                    line += 1;
+                    col = 1;
                     instruction.append(operand);
                     operand.clear();
                     instructions.push_back(instruction);
@@ -200,6 +206,8 @@ void Lexer::tokenize() {
                         operand.push_back(current);
                         advance();
                     }
+                    line += 1;
+                    col = 1;
                     instruction.append(operand);
                     operand.clear();
                     instructions.push_back(instruction);
@@ -211,6 +219,8 @@ void Lexer::tokenize() {
                         buffer.clear();
                         instructions.push_back(instruction);
                         instruction.clear();
+                        col = 1;
+                        line += 1;
                     }
                     else {
                         printf("%s Unnecessary operand for print instruction at line %d, col %d\n", error, line, col);
@@ -221,10 +231,12 @@ void Lexer::tokenize() {
                     }
                 }
                 else {
-                    printf("%s Invalid instruction at line %d, col %d\n", error, line, col);
+                    size_t error_col = col - buffer.size();
+                    printf("%s Invalid instruction at line %d, col %ld\n", error, line, error_col);
                     buffer.clear();
                     this->instructions.clear();
                     this->text.clear();
+                    return;
                 }
             }
         }
