@@ -247,7 +247,6 @@ bool Lexer::char_is_hex(char c) {
     return false;
 }
 
-//TODO: CHECK HERE
 bool Lexer::operand_exists(char c) {
     if (c == '\n') {
         return false;
