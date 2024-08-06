@@ -4,6 +4,7 @@
 
 //TODO: A general refactoring.
 //      Change the logger function
+//TODO: A way to view the stack would be nice.
 
 void clear_screen() {
     printf("\033[2J\033[H");
@@ -118,6 +119,17 @@ int main() {
         else if (command == "exit") {
             //If the user types in "exit" continue
             continue;
+        }
+        else if (command == "help") {
+            printf("A simple stack based virtual computer made in C++\n"
+                   "It lets the user create and compile \".basm\" files.\n"
+                   "Commands and usage:\n"
+                   "ADD 'address':\tFetches operand from address and adds it to AX register's value\n"
+                   "SUB 'address':\tFetches operand from address and subtracts it from AX register's value\n"
+                   "SAVE 'address':\tSaves AX register's value to a location within the stack\n"
+                   "LOAD 'address':\tFetches operand from address and sets AX register's value as the fetched operand\n"
+                   "INT 'value':\tSets the AX register's value as the provided operand\n"
+                   "PRINT:\t\t\tPrints the value on top of the stack\n");
         }
         //For some reason after the shell exits, the main cli program
         //takes in null terminator as input
