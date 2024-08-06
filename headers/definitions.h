@@ -9,4 +9,6 @@
 #define dword int32_t
 #endif
 
+constexpr char error[] = "\x1b[31mERROR:\x1b[0m";
+
 #endif
