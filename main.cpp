@@ -4,7 +4,6 @@
 
 //TODO: A general refactoring.
 //      Change the logger function
-//TODO: Add existing file checks.
 
 void clear_screen() {
     printf("\033[2J\033[H");
