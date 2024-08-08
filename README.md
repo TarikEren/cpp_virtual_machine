@@ -24,10 +24,3 @@ compile: Compiles a .basm file and executes machine functions.
 | SAVE          | 0x4XXX    | Saves a value to the stack                                                            |
 | INT           | 0x5XXX    | Sets the AX register's value                                                          |
 | PRINT         | 0xF000    | Prints the top of the stack (Might change this to an addressed instruction later on.) |
-
-### Todos
-
-Add more commands for the shell.
-Change the machine logic so that it doesn't kill the entire program.
-Add a makefile.
-/T
